@@ -4,6 +4,8 @@ A virginia map that colors counties accoring to the age of the population inside
 Being the Final Project of my cmsc 160 class, I figure this will be a good template to show my improved skills. 
 The original final verison of my project will be uploaded, then improvements showing the skills I've learned will follow.
 
+Thank you to Dr. Dymacek for originally assiging this project and providing the census2010.txt and va-tiny-names.txt files. 
+
 # Original Version
 The program opens two files, census2010.txt (contains 2010 census data) and va-tiny-name.txt(an outline of Virginia and its counties). It then uses the census data to build a color determined by the age population of the county, applies the color to the county, and outputs an svg file containing a map of Virginia's counties colored according to its age demographic.
 
