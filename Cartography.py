@@ -30,19 +30,25 @@ class County:
         return "Name: " + self.name + "\nPop: " + self.pop + "\nAge 0-14: " + self.zero + "\nAge 15-29: " + self.fifteen + "\nAge 30-44: " + self.thirty + "\nAge 45-60: " + self.fourtyfive + "\nAge 60+: " + self.sixty
 
 
-def gather_counties():
-    '''opens the vacensus table and returns a list of all county names from the county column'''
-    with psycopg2.connect( database="vacensus", user="austinoblack", password="(AUS.Data.1998)", host="localhost" ) as conn:
-        with conn.cursor() as cur:
-            cur.execute( 'SELECT county FROM vacensus' )
-            rv = [r[0] for r in cur.fetchall()]
-    conn.close()
+def pull_counties():
+    '''opens "va-tiny-names.txt" and creates a list of county names as they appear in the file'''
+    rv = []
+    with open("va-tiny-names.txt") as file:
+        iterator = 0
+        for line in file:
+            iterator = iterator + 1
+            if (iterator > 7) and (iterator % 2 != 0):
+                line = line.replace( '<title>', '' )
+                line = line.replace( '</title>', '' )
+                line = line.replace( '</path>', '' )
+                line = line.strip( '\n' )
+                rv.append( line )
     return rv
 
 
 def Main():
-    names = gather_counties()
-    print( names )
+    counties = pull_counties()
+    print( counties )
 
 
 Main()
