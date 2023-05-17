@@ -12,5 +12,11 @@ The program opens two files, census2010.txt (contains 2010 census data) and va-t
 - Bugs and Issues:
   - The complete old version did not assign the correct color to the correct county, so the map that is created is inaccurate.
 
-# Updated Version (in progress)
+# Updated Version (Python - Complete)
 The updated program will still open and use the va-tiny-names.txt and will to produce a virginia.svg file, but will open and use an SQL database in place of the census2010.txt file. This will be an improvement over the original version because it is more 'real world' and allows the user to simply update the database as needed. Plus, this allows me to demonstrate the skills I have learned throughout my time at Longwood.
+
+- Notes:
+  For this version, I decided to use Python as it is what I am currently most familiar with in interacting with databases. In this version, I accomplished moving the census data from a text file to an postgreSQL database, and fixed the logic from my original version to correctly and accurately display the colors associated with each county. 
+  
+- Fixes:
+  Correctly display rgb values associated with each county, the created svg file is accurate to the census data.
