@@ -46,9 +46,28 @@ def pull_counties():
     return rv
 
 
+def create_color( county ):
+    '''opens the vacensus database, finds the statistics for a given county and creates the appropiate rgb values, and retuns a string representation of the rgb value'''
+    with psycopg2.connect( database="vacensus", user="austinoblack", password="(AUS.Data.1998)", host="localhost" ) as conn:
+        with conn.cursor() as cur:
+            cur.execute( 'SELECT * FROM vacensus WHERE county = %s', (county + ' ', ) )
+            stats = cur.fetchone()
+            if stats:
+                county = County( stats[0], stats[1], stats[2], stats[3], stats[4], stats[5], stats[6] )
+                rgb = Color( county.young, county.middle, county.old )
+                return str( rgb ) 
+            else:
+                return 'DONE'
+    conn.close()
+
+
 def Main():
     counties = pull_counties()
-    print( counties )
+    colors = []
+    for county in counties:
+        colors.append( create_color( county ) )
+    print( colors )
+    with open(
 
 
 Main()
