@@ -20,3 +20,9 @@ The updated program will still open and use the va-tiny-names.txt and will to pr
   
 - Fixes:
   Correctly display rgb values associated with each county, the created svg file is accurate to the census data.
+  
+# Version 3 (C# - In Progress)
+This versions main purpose is to utilize a programming language that is completely new to me - C#. This version will utilize the improvements introduced in the Python version. It will read in county census data from an SQL database, and use va-tiny-names.txt to produce a virginia.svg file. This file will produce a map of virginia and its counties colored according to the age groups living inside said county. 
+
+- Notes:
+  This is my first project using C#, and will mainly serve as a learning platform for myself.
