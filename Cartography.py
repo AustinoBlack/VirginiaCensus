@@ -66,8 +66,22 @@ def Main():
     colors = []
     for county in counties:
         colors.append( create_color( county ) )
-    print( colors )
-    with open(
-
-
+    
+    header = '''<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n<svg\nxmlns="http://www.w3.org/2000/svg"\nversion="1.0"\nwidth="644.925" height="286.616"\n>\n<rect width="100%" height="100%" fill="white"/>\n'''
+    output = open( 'virginia.svg', 'w' )
+    output.write( header )
+    with open( 'va-tiny-names.txt' ) as template:
+        i = 0
+        j = 0
+        for line in template:
+            i = i + 1
+            if (i > 7) and (i % 2 == 0 ):
+                line = line.replace( "<path", colors[j] )
+                output.write( line )
+                print( line )
+                j = j + 1
+            elif (i >7) and (i % 2 != 0 ):
+                output.write( line )
+                print( line )
+                
 Main()
