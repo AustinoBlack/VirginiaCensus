@@ -11,5 +11,5 @@ County::County(std::string cn, int p, double z, double f, double t, double ff, d
 }
 
 std::string County::asString() {
-    return "{" + countyname + "," + std::to_string(pop) + "," + std::to_string(zero) + "," + std::to_string(fifteen)+ std::to_string(thirty) + "," + std::to_string(sixty) + "}";
+    return "{" + countyname + "," + std::to_string(pop) + "," + std::to_string(zero) + "," + std::to_string(fifteen)+ std::to_string(thirty) + "," + std::to_string(fourtyfive) + "," + std::to_string(sixty) + "}";
 }
