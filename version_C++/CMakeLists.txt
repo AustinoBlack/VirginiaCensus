@@ -3,4 +3,5 @@ project(VirginiaCensus)
 
 set(CMAKE_CXX_STANDARD 17)
 
+add_subdirectory(Tests)
 add_executable( cartography main.cpp Color.cpp County.cpp )
