@@ -12,7 +12,6 @@ The program opens two files, census2010.txt (contains 2010 census data) and va-t
 - Bugs and Issues:
   - The complete old version did not assign the correct color to the correct county, so the map that is created is inaccurate.
 
-- Notes:
 
 # Updated Version (Python - Complete)
 The updated program will still open and use the va-tiny-names.txt and will to produce a virginia.svg file, but will open and use an SQL database in place of the census2010.txt file. This will be an improvement over the original version because it is more 'real world' and allows the user to simply update the database as needed. Plus, this allows me to demonstrate the skills I have learned throughout my time at Longwood.
@@ -24,7 +23,7 @@ The updated program will still open and use the va-tiny-names.txt and will to pr
   Correctly display rgb values associated with each county, the created svg file is accurate to the census data.
   
 # Updated Version (C++ - In-Progress)
-The updated program will use a postgres database instead of a text file for info. This version will also be my first proper project using the Clion IDE and its features.
+The updated program will use a postgreSQL database instead of a text file for county data, hosted from a raspberry pi on my local network. I will be using the libpq++ library (https://www.postgresql.org/docs/7.2/libpqplusplus.html) to connect to the postgreSQL server.
 
 - Notes:
   Update later
