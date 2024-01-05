@@ -6,3 +6,4 @@ include(CTest)
 enable_testing()
 
 add_test( Test-1 "../cartography")
+add_test( Test-2 "../cartography")
