@@ -7,4 +7,5 @@ find_package(PostgreSQL REQUIRED)
 add_subdirectory(Tests)
 add_executable( cartography main.cpp Color.cpp County.cpp )
 
-target_link_libraries(VirginiaCensus PostgreSQL::PostgreSQL)
+# Link to the name of the EXECUTABLE, not the project
+target_link_libraries(cartography PostgreSQL::PostgreSQL)
