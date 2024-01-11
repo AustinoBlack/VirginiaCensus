@@ -1,0 +1,16 @@
+
+Step 1: Prep Connections
+    - Request connection to database on CensusData.local
+    - Ensure connection was successful
+
+Step 2: Prep SVG file to be built
+    - open\create virginia.svg
+    - open the template file
+    - insert header into virginia.svg
+    - get a list of counties from the template file (so they are in order)
+
+Step 3: The Main Loop
+    - look at each line in the file
+    - if a <title> line is found...
+    - request to create an rgb tag for that county name
+    - insert it into the svg
