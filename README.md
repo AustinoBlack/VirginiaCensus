@@ -26,4 +26,4 @@ The updated program will still open and use the va-tiny-names.txt and will to pr
 The updated program will use a postgreSQL database instead of a text file for county data, hosted from a raspberry pi on my local network. I will be using the libpq++ library (https://www.postgresql.org/docs/7.2/libpqplusplus.html) to connect to the postgreSQL server.
 
 - Notes:
-  Update later
+  used Homebrew (https://brew.sh/) to install libpq 
