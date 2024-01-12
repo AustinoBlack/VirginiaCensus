@@ -10,7 +10,6 @@ Step 2: Prep SVG file to be built
     - get a list of counties from the template file (so they are in order)
 
 Step 3: The Main Loop
-    - look at each line in the file
-    - if a <title> line is found...
-    - request to create an rgb tag for that county name
-    - insert it into the svg
+    - going through each line in the template file...
+    - if the line number is even, insert the rgb path tag
+    - if the line number is not even, write the line of the template to virginia.svg
