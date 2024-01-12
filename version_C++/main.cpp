@@ -34,6 +34,12 @@ PGconn* connectDB( const char* conninfo )
     return conn;
 }
 
+/* closeConnection closes the connection to a Postgres database provided by a given PGconn* conn */
+void closeConnection( PGconn* conn )
+{
+    PQfinish( conn );
+}
+
 int main()
 {
     const char* conninfo = "dbname=censusdata user=austinoblack password=(AUS.Census.1998) host=CensusData.local port=5432";
