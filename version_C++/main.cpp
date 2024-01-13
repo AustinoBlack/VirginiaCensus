@@ -40,21 +40,64 @@ void closeConnection( PGconn* conn )
     PQfinish( conn );
 }
 
+PGresult* executeQuery( PGconn* conn, char* query )
+{
+    PGresult *res;
+
+    // clear previous query result
+    PQclear( res );
+
+    // Submit the query and retrieve the result
+    res = PQexec(conn, query);
+
+    // Check the status of the query result
+    ExecStatusType resStatus = PQresultStatus(res);
+
+    // Convert the status to a string and print it
+    printf("Query Status: %s\n", PQresStatus(resStatus));
+
+    // Check if the query execution was successful
+    if (resStatus != PGRES_TUPLES_OK) {
+        // If not successful, print the error message and finish the connection
+        printf("Error while executing the query: %s\n", PQerrorMessage(conn));
+
+        // Clear the result
+        PQclear(res);
+
+        // Finish the connection
+        PQfinish(conn);
+
+        // Exit the program
+        exit(1);
+    }
+
+    // We have successfully executed the query
+    printf("Query Executed Successfully\n");
+
+    // return the result
+    return res;
+}
+
 int main()
 {
     const char* conninfo = "dbname=censusdata user=austinoblack password=(AUS.Census.1998) host=CensusData.local port=5432";
     PGconn* conn = connectDB( conninfo );
 
-    char* query = "SELECT county FROM vacensus WHERE population = 23022"; // should return Prince_Edward
+    char* query = "SELECT * FROM vacensus WHERE county = 'Prince_Edward '";
+    PGresult* res = executeQuery(conn, query);
 
-    //executes the query
-    PGresult *res = PQexec(conn, query);
+    // Get the number of rows and columns in the query result
+    int rows = PQntuples(res);
+    int cols = PQnfields(res);
 
-    //prints out the value returned
-    printf("%s\n", PQgetvalue(res, 0, 0));
-
-    // Close the connection and free the memory
-    PQfinish(conn);
+    // Print all the rows and columns
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            // Print the column value
+            printf("%s\t", PQgetvalue(res, i, j));
+        }
+        printf("\n");
+    }
 
     std::cout << "{Hello, World!}" << std::endl;
     Color testcolor = Color(1, 2, 3);
