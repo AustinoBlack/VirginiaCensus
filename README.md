@@ -27,3 +27,4 @@ The updated program will use a postgreSQL database instead of a text file for co
 
 - Notes:
   used Homebrew (https://brew.sh/) to install libpq 
+  thank you to this article to elaborating more on the libpq library and its functions (https://dev.to/omarsaad/building-a-postgresql-database-client-with-libpq-in-c-connecting-and-executing-queries-5a51)
