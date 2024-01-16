@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include "Color.h"
 #include "County.h"
 #include "libpq-fe.h"
@@ -40,9 +41,10 @@ void closeConnection( PGconn* conn )
     PQfinish( conn );
 }
 
+/* executeQuery executes a given query on a given connection */
 PGresult* executeQuery( PGconn* conn, char* query )
 {
-    PGresult *res;
+    PGresult *res = nullptr;
 
     // clear previous query result
     PQclear( res );
@@ -78,6 +80,13 @@ PGresult* executeQuery( PGconn* conn, char* query )
     return res;
 }
 
+/* createColor creates a path tag with the appropriate rgb values with a given county and connection */
+std::string createColor( PGconn* conn, std::string county )
+{
+    std::string rv;
+    return rv;
+}
+
 int main()
 {
     const char* conninfo = "dbname=censusdata user=austinoblack password=(AUS.Census.1998) host=CensusData.local port=5432";
@@ -98,6 +107,8 @@ int main()
         }
         printf("\n");
     }
+
+    closeConnection( conn );
 
     std::cout << "{Hello, World!}" << std::endl;
     Color testcolor = Color(1, 2, 3);
