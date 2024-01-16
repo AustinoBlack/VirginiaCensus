@@ -7,13 +7,22 @@ find_package(PostgreSQL REQUIRED)
 include(CTest)
 enable_testing()
 
-add_executable( test Test_DBConnection.cpp)
-add_executable( test2 Test_DBConnection_Fail.cpp)
+add_executable( conn Test_DBConnection.cpp)
+add_executable( connf Test_DBConnection_Fail.cpp)
+add_executable( query Test_DBQuery.cpp )
+add_executable( queryf Test_DBQuery_Fail.cpp )
 
-add_test( Connection_Test test )
-add_test( Connection_Test_Fail test2 )
+add_test( Connection_Test conn )
+add_test( Connection_Test_Fail connf )
+add_test( Query_Execution_Test query)
+add_test( Query_Execution_Test_Fail queryf)
+
+# Test Fail Exceptions
 set_tests_properties( Connection_Test_Fail PROPERTIES WILL_FAIL TRUE )
+set_tests_properties( Query_Execution_Test_Fail PROPERTIES WILL_FAIL TRUE )
 
 # Link to the name of the EXECUTABLE, not the project
-target_link_libraries(test PostgreSQL::PostgreSQL)
-target_link_libraries(test2 PostgreSQL::PostgreSQL)
+target_link_libraries(conn PostgreSQL::PostgreSQL)
+target_link_libraries(connf PostgreSQL::PostgreSQL)
+target_link_libraries(query PostgreSQL::PostgreSQL)
+target_link_libraries(queryf PostgreSQL::PostgreSQL)
