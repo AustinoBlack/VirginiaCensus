@@ -92,28 +92,5 @@ int main()
     const char* conninfo = "dbname=censusdata user=austinoblack password=(AUS.Census.1998) host=CensusData.local port=5432";
     PGconn* conn = connectDB( conninfo );
 
-    char* query = "SELECT * FROM vacensus WHERE county = 'Prince_Edward '";
-    PGresult* res = executeQuery(conn, query);
-
-    // Get the number of rows and columns in the query result
-    int rows = PQntuples(res);
-    int cols = PQnfields(res);
-
-    // Print all the rows and columns
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            // Print the column value
-            printf("%s\t", PQgetvalue(res, i, j));
-        }
-        printf("\n");
-    }
-
     closeConnection( conn );
-
-    std::cout << "{Hello, World!}" << std::endl;
-    Color testcolor = Color(1, 2, 3);
-    County testcounty = County("test", 1, 2, 3, 4, 5, 6);
-
-    std::cout << testcolor.asString() << std::endl;
-    std::cout << testcounty.asString() << std::endl;
 }
