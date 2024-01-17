@@ -19,12 +19,13 @@ add_test( Query_Execution_Test query)
 add_test( Query_Execution_Test_Fail queryf)
 add_test( compare_files_test compare "one.txt" "two.txt")
 add_test( compare_files_test_Fail compare "one.txt" "wrong.txt")
-
+add_test( compare_files_bad_cmd compare "one.txt")
 
 # Test Fail Exceptions
 set_tests_properties( Connection_Test_Fail PROPERTIES WILL_FAIL TRUE )
 set_tests_properties( Query_Execution_Test_Fail PROPERTIES WILL_FAIL TRUE )
 set_tests_properties( compare_files_test_Fail PROPERTIES WILL_FAIL TRUE )
+set_tests_properties( compare_files_bad_cmd PROPERTIES WILL_FAIL True )
 
 # Link to the name of the EXECUTABLE, not the project
 target_link_libraries(conn PostgreSQL::PostgreSQL)
