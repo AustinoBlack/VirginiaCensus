@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 
-// created with help from AI - introduced tellg(), seekg() and logic fronm lines 7,8,20,&21 to me so thanks!
+// created with help from AI - introduced tellg(), seekg() and logic from lines 7,8,20,&21 to me so thanks!
 int compareFiles(const std::string& filename1, const std::string& filename2) {
     std::ifstream file1(filename1, std::ifstream::binary | std::ifstream::ate);
     std::ifstream file2(filename2, std::ifstream::binary | std::ifstream::ate);
@@ -42,9 +42,9 @@ int main( int argc, char* argv[] )
     //std::cout << "file1: " << argv[1] << std::endl;
     //std::cout << "file2: " << argv[2] << std::endl;
 
-    //build path to correct file
+    //build path to correct file - correct file is in the Test directory, output files are in the debug folder
     std::string f1 = path + argv[1];
-    std::string f2 = path + argv[2];
+    std::string f2 = argv[2];
 
    // std::cout << f1 << std::endl << f2 << std::endl;
 
