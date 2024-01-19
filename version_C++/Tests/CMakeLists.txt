@@ -8,7 +8,7 @@ include(CTest)
 enable_testing()
 
 add_executable( compare file_comparor.cpp )
-add_executable( Test_Color Test_Create_Color.cpp )
+add_executable( Test_Color Test_Create_Color.cpp "../Color.cpp" )
 add_executable( conn Test_DBConnection.cpp)
 add_executable( connf Test_DBConnection_Fail.cpp)
 add_executable( query Test_DBQuery.cpp )
