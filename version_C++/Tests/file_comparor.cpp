@@ -3,9 +3,9 @@
 #include <string>
 
 // created with help from AI - introduced tellg(), seekg() and logic from lines 7,8,20,&21 to me so thanks!
-int compareFiles(const std::string& filename1, const std::string& filename2) {
-    std::ifstream file1(filename1, std::ifstream::binary | std::ifstream::ate);
-    std::ifstream file2(filename2, std::ifstream::binary | std::ifstream::ate);
+int compareFiles(const std::string& correct_file, const std::string& testing_file) {
+    std::ifstream file1(correct_file, std::ifstream::binary | std::ifstream::ate);
+    std::ifstream file2(testing_file, std::ifstream::binary | std::ifstream::ate);
 
     if (!file1.is_open() || !file2.is_open()) {
         std::cerr << "Error opening files!" << std::endl;
@@ -34,21 +34,21 @@ int main( int argc, char* argv[] )
 {
     if( argc != 3 )
     {
-        std::cout << "Must include two files\n";
+        std::cout << "Must include two files\n - Correct file first, Testing file second\n";
         return 1;
     }
 
     std::string path = "/Users/austinoblack/Desktop/Projects/VirginiaCensus/version_C++/Tests/";
-    //std::cout << "file1: " << argv[1] << std::endl;
-    //std::cout << "file2: " << argv[2] << std::endl;
+    //std::cout << "Correct_file: " << argv[1] << std::endl;
+    //std::cout << "Testing_file: " << argv[2] << std::endl;
 
     //build path to correct file - correct file is in the Test directory, output files are in the debug folder
-    std::string f1 = path + argv[1];
-    std::string f2 = argv[2];
+    std::string correct_file = path + argv[1];
+    std::string testing_file = argv[2];
 
-   // std::cout << f1 << std::endl << f2 << std::endl;
+   // std::cout << correct_file << std::endl << testing_file << std::endl;
 
-    int result = compareFiles(f1, f2);
+    int result = compareFiles(correct_file, testing_file);
     if (result == 0) {
         std::cout << "Files are identical." << std::endl;
     } else {
