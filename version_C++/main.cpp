@@ -82,10 +82,8 @@ PGresult* executeQuery( PGconn* conn, const char* query )
 }
 
 /* createColor creates a path tag with the appropriate rgb values with a given county and connection */
-std::string createColor( PGconn* conn, std::string county )
+std::string createColor( PGconn* conn, const std::string county )
 {
-    std::string rv = "";
-
     //build query for given county
     std::string query = "SELECT group1, group2, group3, group4, group5 "
                         "FROM vacensus "
@@ -104,7 +102,7 @@ std::string createColor( PGconn* conn, std::string county )
     Color color (r, g, b);
 
     //return the path tag
-    return rv = color.asString();
+    return color.asString();
 }
 
 /* pullCounties queries and returns a vector of all county names from the vacensus table from a given connection */
@@ -118,9 +116,10 @@ std::vector<std::string> pullCounties( PGconn* conn )
     PGresult* res = executeQuery( conn, query.c_str() );
 
     //put results into a vector
-    for( int i = 0; i < PQntuples(res); i++ )
+    rv.reserve(PQntuples(res));
+for( int i = 0; i < PQntuples(res); i++ )
     {
-        rv.push_back( PQgetvalue(res, i, 0) );
+        rv.emplace_back( PQgetvalue(res, i, 0) );
         //std::cout << rv[i] << std::endl; // DEBUG
     }
 
@@ -134,13 +133,11 @@ int main()
     PGconn* conn = connectDB( conninfo );
 
     std::vector<std::string> vec = pullCounties( conn );
-    for( int i = 0; i < vec.size(); i++ ){
-        std::cout << vec[i] << std::endl;
-        std::string c = createColor( conn, vec[i]);
+    for(const auto & i : vec){
+        std::cout << i << std::endl;
+        std::string c = createColor( conn, i);
         std::cout << c << std::endl;
     }
-
-
 
     closeConnection( conn );
 }
