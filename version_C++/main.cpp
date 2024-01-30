@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <vector>
 #include "Color.h"
 #include "County.h"
 #include "libpq-fe.h"
@@ -42,7 +43,7 @@ void closeConnection( PGconn* conn )
 }
 
 /* executeQuery executes a given query on a given connection */
-PGresult* executeQuery( PGconn* conn, char* query )
+PGresult* executeQuery( PGconn* conn, const char* query )
 {
     PGresult *res = nullptr;
 
@@ -83,14 +84,37 @@ PGresult* executeQuery( PGconn* conn, char* query )
 /* createColor creates a path tag with the appropriate rgb values with a given county and connection */
 std::string createColor( PGconn* conn, std::string county )
 {
-    std::string rv;
-    return rv;
+    std::string rv = "";
+
+    //build query for given county
+    std::string query = "SELECT group1, group2, group3, group4, group5 "
+                        "FROM vacensus "
+                        "WHERE county = '" + county + "'";
+
+    //execute query
+    PGresult* res = executeQuery( conn, query.c_str() );
+
+    //parse results into separate rgb percentages.
+    int r = atoi( PQgetvalue(res, 0, 0) ) + atoi(PQgetvalue(res, 0, 1)); // 0 - 30
+    int g = atoi( PQgetvalue(res, 0, 2) ) + atoi(PQgetvalue(res, 0, 3)); // 30 - 60
+    int b = atoi( PQgetvalue(res, 0, 4) ); // 60 +
+    //std::cout << r << "\t" << g << "\t" << b << std::endl;
+
+    // build <path> tag with parsed results
+    Color color (r, g, b);
+
+    //return the path tag
+    return rv = color.asString();
 }
 
 int main()
 {
     const char* conninfo = "dbname=censusdata user=austinoblack password=(AUS.Census.1998) host=CensusData.local port=5432";
     PGconn* conn = connectDB( conninfo );
+
+    std::string c = createColor( conn, "Prince_Edward ");
+
+    std::cout << c;
 
     closeConnection( conn );
 }
