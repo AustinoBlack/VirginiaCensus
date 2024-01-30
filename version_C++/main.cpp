@@ -95,10 +95,10 @@ std::string createColor( PGconn* conn, std::string county )
     PGresult* res = executeQuery( conn, query.c_str() );
 
     //parse results into separate rgb percentages.
-    int r = atoi( PQgetvalue(res, 0, 0) ) + atoi(PQgetvalue(res, 0, 1)); // 0 - 30
-    int g = atoi( PQgetvalue(res, 0, 2) ) + atoi(PQgetvalue(res, 0, 3)); // 30 - 60
-    int b = atoi( PQgetvalue(res, 0, 4) ); // 60 +
-    //std::cout << r << "\t" << g << "\t" << b << std::endl;
+    int r = atoi( PQgetvalue(res, 0, 0)) + atoi(PQgetvalue(res, 0, 1)); // 0 - 30
+    int g = atoi( PQgetvalue(res, 0, 2)) + atoi(PQgetvalue(res, 0, 3)); // 30 - 60
+    int b = atoi( PQgetvalue(res, 0, 4)); // 60 +
+    //std::cout << r << "\t" << g << "\t" << b << std::endl; //DEBUG
 
     // build <path> tag with parsed results
     Color color (r, g, b);
@@ -107,14 +107,40 @@ std::string createColor( PGconn* conn, std::string county )
     return rv = color.asString();
 }
 
+/* pullCounties queries and returns a vector of all county names from the vacensus table from a given connection */
+std::vector<std::string> pullCounties( PGconn* conn )
+{
+    std::vector<std::string> rv;
+    std::string query = "SELECT county "
+                        "FROM vacensus";
+
+    //execute query
+    PGresult* res = executeQuery( conn, query.c_str() );
+
+    //put results into a vector
+    for( int i = 0; i < PQntuples(res); i++ )
+    {
+        rv.push_back( PQgetvalue(res, i, 0) );
+        //std::cout << rv[i] << std::endl; // DEBUG
+    }
+
+    //return the vector of county names
+    return rv;
+}
+
 int main()
 {
     const char* conninfo = "dbname=censusdata user=austinoblack password=(AUS.Census.1998) host=CensusData.local port=5432";
     PGconn* conn = connectDB( conninfo );
 
-    std::string c = createColor( conn, "Prince_Edward ");
+    std::vector<std::string> vec = pullCounties( conn );
+    for( int i = 0; i < vec.size(); i++ ){
+        std::cout << vec[i] << std::endl;
+        std::string c = createColor( conn, vec[i]);
+        std::cout << c << std::endl;
+    }
 
-    std::cout << c;
+
 
     closeConnection( conn );
 }
