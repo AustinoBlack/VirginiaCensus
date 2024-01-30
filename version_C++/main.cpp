@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <vector>
 #include "Color.h"
 #include "County.h"
 #include "libpq-fe.h"
@@ -42,7 +43,7 @@ void closeConnection( PGconn* conn )
 }
 
 /* executeQuery executes a given query on a given connection */
-PGresult* executeQuery( PGconn* conn, char* query )
+PGresult* executeQuery( PGconn* conn, const char* query )
 {
     PGresult *res = nullptr;
 
@@ -81,9 +82,48 @@ PGresult* executeQuery( PGconn* conn, char* query )
 }
 
 /* createColor creates a path tag with the appropriate rgb values with a given county and connection */
-std::string createColor( PGconn* conn, std::string county )
+std::string createColor( PGconn* conn, const std::string county )
 {
-    std::string rv;
+    //build query for given county
+    std::string query = "SELECT group1, group2, group3, group4, group5 "
+                        "FROM vacensus "
+                        "WHERE county = '" + county + "'";
+
+    //execute query
+    PGresult* res = executeQuery( conn, query.c_str() );
+
+    //parse results into separate rgb percentages.
+    int r = atoi( PQgetvalue(res, 0, 0)) + atoi(PQgetvalue(res, 0, 1)); // 0 - 30
+    int g = atoi( PQgetvalue(res, 0, 2)) + atoi(PQgetvalue(res, 0, 3)); // 30 - 60
+    int b = atoi( PQgetvalue(res, 0, 4)); // 60 +
+    //std::cout << r << "\t" << g << "\t" << b << std::endl; //DEBUG
+
+    // build <path> tag with parsed results
+    Color color (r, g, b);
+
+    //return the path tag
+    return color.asString();
+}
+
+/* pullCounties queries and returns a vector of all county names from the vacensus table from a given connection */
+std::vector<std::string> pullCounties( PGconn* conn )
+{
+    std::vector<std::string> rv;
+    std::string query = "SELECT county "
+                        "FROM vacensus";
+
+    //execute query
+    PGresult* res = executeQuery( conn, query.c_str() );
+
+    //put results into a vector
+    rv.reserve(PQntuples(res));
+for( int i = 0; i < PQntuples(res); i++ )
+    {
+        rv.emplace_back( PQgetvalue(res, i, 0) );
+        //std::cout << rv[i] << std::endl; // DEBUG
+    }
+
+    //return the vector of county names
     return rv;
 }
 
@@ -92,28 +132,12 @@ int main()
     const char* conninfo = "dbname=censusdata user=austinoblack password=(AUS.Census.1998) host=CensusData.local port=5432";
     PGconn* conn = connectDB( conninfo );
 
-    char* query = "SELECT * FROM vacensus WHERE county = 'Prince_Edward '";
-    PGresult* res = executeQuery(conn, query);
-
-    // Get the number of rows and columns in the query result
-    int rows = PQntuples(res);
-    int cols = PQnfields(res);
-
-    // Print all the rows and columns
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            // Print the column value
-            printf("%s\t", PQgetvalue(res, i, j));
-        }
-        printf("\n");
+    std::vector<std::string> vec = pullCounties( conn );
+    for(const auto & i : vec){
+        std::cout << i << std::endl;
+        std::string c = createColor( conn, i);
+        std::cout << c << std::endl;
     }
 
     closeConnection( conn );
-
-    std::cout << "{Hello, World!}" << std::endl;
-    Color testcolor = Color(1, 2, 3);
-    County testcounty = County("test", 1, 2, 3, 4, 5, 6);
-
-    std::cout << testcolor.asString() << std::endl;
-    std::cout << testcounty.asString() << std::endl;
 }
