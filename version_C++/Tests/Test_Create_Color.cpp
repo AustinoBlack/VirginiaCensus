@@ -47,7 +47,7 @@ std::string createColor( PGconn* conn, const std::string county )
     //build query for given county
     std::string query = "SELECT group1, group2, group3, group4, group5 "
                         "FROM vacensus "
-                        "WHERE county = '" + county + "'";
+                        "WHERE county = '" + county + " '";
 
     //execute query
     PGresult* res = executeQuery( conn, query.c_str() );
@@ -92,6 +92,6 @@ int main(int argc, char* argv[])
     printf("DBName: %s\n", PQdb(conn));
 
     // open given filename and insert pathtag
-    std::ofstream f( file.substr(0, file.length() - 1) + ".txt", std::ifstream::trunc);
-    f << createColor( conn, file );
+    std::ofstream f( file.substr(0, file.length()) + ".txt", std::ifstream::trunc);
+    f << createColor( conn, file ) << std::endl;
 }
