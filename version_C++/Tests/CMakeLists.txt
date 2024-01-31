@@ -14,18 +14,14 @@ add_executable( connf Test_DBConnection_Fail.cpp)
 add_executable( query Test_DBQuery.cpp )
 add_executable( queryf Test_DBQuery_Fail.cpp )
 
-add_custom_command( #this ...
-        TARGET Test_Color
-        POST_BUILD
-        COMMAND Test_Color
-)
+
 
 add_test( Connection_Test conn )
 add_test( Connection_Test_Fail connf )
 add_test( Query_Execution_Test query )
 add_test( Query_Execution_Test_Fail queryf )
-add_test( Run_Test_Color Test_Color ) # ... is supposed to do this. why not ?
-add_test( compare_files_test compare "Correct.txt" "Color_Output.txt" )
+add_test( Run_Test_Color Test_Color "Accomack ") # ... is supposed to do this. why not ?
+add_test( compare_files_test compare "Accomack.txt" "Accomack.txt" )
 add_test( compare_files_test_Fail compare "Wrong.txt" "Color_Output.txt" )
 add_test( compare_files_bad_cmd compare "Correct.txt" )
 add_test( compare_files_bad_cmd_2 compare )
@@ -44,3 +40,4 @@ target_link_libraries(conn PostgreSQL::PostgreSQL)
 target_link_libraries(connf PostgreSQL::PostgreSQL)
 target_link_libraries(query PostgreSQL::PostgreSQL)
 target_link_libraries(queryf PostgreSQL::PostgreSQL)
+target_link_libraries(Test_Color PostgreSQL::PostgreSQL)

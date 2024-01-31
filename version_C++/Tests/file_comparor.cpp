@@ -38,7 +38,7 @@ int main( int argc, char* argv[] )
         return 1;
     }
 
-    std::string path = "/Users/austinoblack/Desktop/Projects/VirginiaCensus/version_C++/Tests/";
+    std::string path = "/Users/austinoblack/Desktop/Projects/VirginiaCensus/version_C++/Tests/Correct/";
     //std::cout << "Correct_file: " << argv[1] << std::endl;
     //std::cout << "Testing_file: " << argv[2] << std::endl;
 
