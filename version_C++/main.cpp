@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <fstream>
 #include "Color.h"
 #include "County.h"
 #include "libpq-fe.h"
@@ -57,7 +58,7 @@ PGresult* executeQuery( PGconn* conn, const char* query )
     ExecStatusType resStatus = PQresultStatus(res);
 
     // Convert the status to a string and print it
-    printf("Query Status: %s\n", PQresStatus(resStatus));
+    //printf("Query Status: %s\n", PQresStatus(resStatus));
 
     // Check if the query execution was successful
     if (resStatus != PGRES_TUPLES_OK) {
@@ -75,7 +76,7 @@ PGresult* executeQuery( PGconn* conn, const char* query )
     }
 
     // We have successfully executed the query
-    printf("Query Executed Successfully\n");
+    //printf("Query Executed Successfully\n");
 
     // return the result
     return res;
@@ -87,7 +88,7 @@ std::string createColor( PGconn* conn, const std::string county )
     //build query for given county
     std::string query = "SELECT group1, group2, group3, group4, group5 "
                         "FROM vacensus "
-                        "WHERE county = '" + county + "'";
+                        "WHERE county = '" + county + " '";
 
     //execute query
     PGresult* res = executeQuery( conn, query.c_str() );
@@ -117,7 +118,7 @@ std::vector<std::string> pullCounties( PGconn* conn )
 
     //put results into a vector
     rv.reserve(PQntuples(res));
-for( int i = 0; i < PQntuples(res); i++ )
+    for( int i = 0; i < PQntuples(res); i++ )
     {
         rv.emplace_back( PQgetvalue(res, i, 0) );
         //std::cout << rv[i] << std::endl; // DEBUG
@@ -129,15 +130,45 @@ for( int i = 0; i < PQntuples(res); i++ )
 
 int main()
 {
+    // establish DB connection
     const char* conninfo = "dbname=censusdata user=austinoblack password=(AUS.Census.1998) host=CensusData.local port=5432";
     PGconn* conn = connectDB( conninfo );
 
-    std::vector<std::string> vec = pullCounties( conn );
-    for(const auto & i : vec){
-        std::cout << i << std::endl;
-        std::string c = createColor( conn, i);
-        std::cout << c << std::endl;
+    // open file
+    std::fstream file;
+    file.open( "va-tiny-names.svg", std::fstream::in | std::fstream::out );
+/*
+    // get number of lines
+    file.unsetf(std::ios_base::skipws);
+    unsigned line_count = std::count(
+            std::istream_iterator<char>(file),
+            std::istream_iterator<char>(),
+            '\n');
+
+    std::cout << "Lines: " << line_count << "\n";
+*/
+    // main loop
+    std::string line;
+    std:: string prev;
+    int i = 1;
+    while ( getline( file, line) ) {
+        if( i > 7 && i%2 != 0 && i < 275) {
+            std::cout << "LINE: " << i << std::endl;
+            line = line.erase(0, 15);
+            line = line.erase( line.length() - 15, 15);
+            std::cout << "COUNTY: " << line  << std::endl;
+            //std::string color = createColor(conn, line );
+            std::cout << createColor(conn, line ) << std::endl;
+        }
+
+        else if( i > 7 && i%2 == 0 && i < 275 ){ // get path data and hold on to it
+            std::cout << "LINE: " << i << std::endl;
+            prev = line;
+            std::cout << "PREV: " << prev << std::endl;
+        }
+        i++;
     }
 
+    file.close();
     closeConnection( conn );
 }
