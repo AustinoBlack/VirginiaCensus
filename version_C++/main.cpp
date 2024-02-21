@@ -135,8 +135,10 @@ int main()
     PGconn* conn = connectDB( conninfo );
 
     // open file
-    std::fstream file;
-    file.open( "va-tiny-names.svg", std::fstream::in | std::fstream::out );
+    std::fstream temp;
+    std::fstream out;
+    temp.open( "Virginia.template", std::fstream::in );
+    out.open( "Virginia.svg", std::fstream::out | std::fstream::trunc );
 /*
     // get number of lines
     file.unsetf(std::ios_base::skipws);
@@ -149,26 +151,36 @@ int main()
 */
     // main loop
     std::string line;
-    std:: string prev;
+    std::string prev;
+    std::string title;
     int i = 1;
-    while ( getline( file, line) ) {
-        if( i > 7 && i%2 != 0 && i < 275) {
-            std::cout << "LINE: " << i << std::endl;
-            line = line.erase(0, 15);
-            line = line.erase( line.length() - 15, 15);
-            std::cout << "COUNTY: " << line  << std::endl;
-            //std::string color = createColor(conn, line );
-            std::cout << createColor(conn, line ) << std::endl;
+    while ( getline( temp, line) ) {
+        if ( i <= 7 || i == 276 ) {
+            out << line << std::endl;
         }
 
-        else if( i > 7 && i%2 == 0 && i < 275 ){ // get path data and hold on to it
-            std::cout << "LINE: " << i << std::endl;
-            prev = line;
-            std::cout << "PREV: " << prev << std::endl;
+        else if( i > 7 && i%2 != 0 && i < 276) {
+            //std::cout << "LINE: " << i << std::endl;
+            title = line;
+            line = line.erase(0, 15);
+            line = line.erase( line.length() - 15, 15);
+            //std::cout << "COUNTY: " << line  << std::endl;
+            //std::string color = createColor(conn, line );
+            out << "\t" << createColor(conn, line ) << " " << prev << std::endl;
+            out << title << std::endl;
+        }
+
+        else if( i > 7 && i%2 == 0 && i < 276 ){ // get path data and hold on to it
+            //std::cout << "LINE: " << i << std::endl;
+            prev = line.erase( 0, 10 );
+            //std::cout << "PREV: " << prev << std::endl;
         }
         i++;
     }
 
-    file.close();
+    temp.close();
+    out.close();
     closeConnection( conn );
+
+    std::cout << "DONE!" << std::endl;
 }
