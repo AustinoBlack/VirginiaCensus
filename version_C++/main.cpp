@@ -3,7 +3,6 @@
 #include <vector>
 #include <fstream>
 #include "Color.h"
-#include "County.h"
 #include "libpq-fe.h"
 
 /* connect DB attempts to connect to a Postgres database provided by a given conninfo.
@@ -155,11 +154,11 @@ int main()
     std::string title;
     int i = 1;
     while ( getline( temp, line) ) {
-        if ( i <= 7 || i == 276 ) {
+        if ( i <= 7 || i == 276 ) { // header and footer of the svg
             out << line << std::endl;
         }
 
-        else if( i > 7 && i%2 != 0 && i < 276) {
+        else if( i > 7 && i%2 != 0 && i < 276) { // build and transfer each line to the new svg file
             //std::cout << "LINE: " << i << std::endl;
             title = line;
             line = line.erase(0, 15);
